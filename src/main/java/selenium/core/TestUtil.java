@@ -3,8 +3,11 @@ package selenium.core;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -341,36 +344,15 @@ public abstract class TestUtil {
         }
     }
     
-    public String waitUntil (ETarget targetBy, String target) {
-    	
-    	WebElement element = waitForElement(targetBy, target);		
-		return element.getText();
-	}
 
-    public boolean isDisplayed (ETarget targetBy, String target) {
+    public WebElement waitUntilElementIsDisplayed (ETarget targetBy, String target) {
     	
-    	WebElement element = waitForElement(targetBy, target);		
-		return element.isDisplayed();
+    	WebDriverWait wait = new WebDriverWait(driver, 30);
+    	
+    	return wait.until(ExpectedConditions.visibilityOfElementLocated(by(targetBy, target)));
+    	//WebElement element = waitForElement(targetBy, target);		
+		//return element.isDisplayed();
 	}
     
-    
-    private WebElement waitForElement(ETarget targetBy, String target) {
-    	
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(Duration.ofSeconds(30))
-				.pollingEvery(Duration.ofSeconds(1))
-				.ignoring(Exception.class);
-
-		WebElement element = wait.until(new Function<WebDriver, WebElement>() {
-			public WebElement apply(WebDriver driver) {				
-				return driver.findElement(by(targetBy, target));
-			}
-		});
-		
-		return element;
-    	
-    }
-    
-
 
 }

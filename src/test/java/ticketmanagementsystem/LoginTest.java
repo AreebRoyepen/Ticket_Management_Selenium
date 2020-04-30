@@ -1,5 +1,6 @@
 package ticketmanagementsystem;
 
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import selenium.core.BaseTest;
@@ -14,16 +15,16 @@ public class LoginTest extends BaseTest {
 		
 		logOn(CommonMappings.URL_GIS_TICKET_SYTEM, CommonMappings.VALUE_USERNAME, CommonMappings.VALUE_PASSWORD);
 	
-		isDisplayed(XPATH, ObjectMappingsRepository.XPATH_APPBAR);
+		waitUntilElementIsDisplayed(XPATH, ObjectMappingsRepository.XPATH_APPBAR);
 		
         String expectedLink = AssertExpectedMappings.URL_DASHBOARD;
         String newLink = getCurrentUrl();
 
         assertTest(expectedLink,newLink);   //////////Check if user was directed to dashboard
         
-        String heading = waitUntil(XPATH, ObjectMappingsRepository.XPATH_DASH_HEADING);
+        WebElement heading = waitUntilElementIsDisplayed(XPATH, ObjectMappingsRepository.XPATH_DASH_HEADING);
         
-        assertTest(AssertExpectedMappings.DASHBOARD_HEADING, heading);
+        assertTest(AssertExpectedMappings.DASHBOARD_HEADING, heading.getText());
 		
 	}
 	
@@ -33,9 +34,9 @@ public class LoginTest extends BaseTest {
 		
 		logOn(CommonMappings.URL_GIS_TICKET_SYTEM, "", "");
  
-        String heading = waitUntil(XPATH, ObjectMappingsRepository.XPATH_LOGIN_INVALID_CREDS);
+        WebElement userFeedback = waitUntilElementIsDisplayed(XPATH, ObjectMappingsRepository.XPATH_LOGIN_INVALID_CREDS);
         
-        assertTest(AssertExpectedMappings.LOGIN_INVALID_CREDS, heading);
+        assertTest(AssertExpectedMappings.LOGIN_INVALID_CREDS, userFeedback.getText());
 		
 	}
 	
